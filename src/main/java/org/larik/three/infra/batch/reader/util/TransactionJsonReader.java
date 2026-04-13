@@ -1,21 +1,22 @@
 package org.larik.three.infra.batch.reader.util;
 
+import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.Nullable;
 import org.larik.three.domain.dto.TransactionJson;
 import org.larik.three.domain.enums.PaymentStatus;
 import org.larik.three.domain.model.Client;
 import org.larik.three.domain.model.Payment;
 import org.larik.three.domain.model.Transaction;
-import org.springframework.batch.infrastructure.item.ResourceAware;
 import org.springframework.batch.infrastructure.item.json.JacksonJsonObjectReader;
 import org.springframework.batch.infrastructure.item.json.JsonObjectReader;
 import org.springframework.core.io.Resource;
 
-public class TransactionJsonReader implements JsonObjectReader<Transaction>, ResourceAware {
+@RequiredArgsConstructor
+public class TransactionJsonReader implements JsonObjectReader<Transaction> {
 
     private final JacksonJsonObjectReader<TransactionJson> delegate = new JacksonJsonObjectReader<>(TransactionJson.class);
 
-    private String fileName;
+    private final String fileName;
 
     @Override
     public void open(Resource resource) throws Exception {
@@ -52,8 +53,4 @@ public class TransactionJsonReader implements JsonObjectReader<Transaction>, Res
         delegate.close();
     }
 
-    @Override
-    public void setResource(Resource resource) {
-        this.fileName = resource.getFilename();
-    }
 }
