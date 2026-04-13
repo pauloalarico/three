@@ -1,3 +1,37 @@
 spring:
   application:
     name: three
+  sql:
+    init:
+      mode: never
+
+  datasource:
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    url: ${DB_URL}
+    jdbc-url: ${DB_URL}
+    jdbcUrl: ${DB_URL}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      jdbc-url: ${DB_URL}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        show-sql: true
+  batch:
+    jdbc:
+      initialize-schema: never
+    job:
+      enabled: true
+  mongodb:
+    uri: ${MONGO_URL}
+
+  logging:
+    level.org.springframework.batch: DEBUG
+    level.org.example.batchmongo: DEBUG
+
+app:
+  mongoCollection: ${COLLECTION_THREE}
