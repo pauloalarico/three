@@ -1,50 +1,96 @@
 package org.larik.three.infra.batch.reader;
 
+import lombok.RequiredArgsConstructor;
 import org.larik.three.domain.model.Transaction;
+import org.larik.three.infra.batch.reader.util.TransactionFieldMapper;
+import org.larik.three.infra.batch.reader.util.TransactionJsonReader;
+import org.larik.three.infra.batch.reader.util.TransactionUnmarshaller;
 import org.springframework.batch.infrastructure.item.file.FlatFileItemReader;
+import org.springframework.batch.infrastructure.item.file.MultiResourceItemReader;
 import org.springframework.batch.infrastructure.item.file.builder.FlatFileItemReaderBuilder;
-import org.springframework.batch.infrastructure.item.json.JacksonJsonObjectReader;
+import org.springframework.batch.infrastructure.item.file.builder.MultiResourceItemReaderBuilder;
 import org.springframework.batch.infrastructure.item.json.JsonItemReader;
 import org.springframework.batch.infrastructure.item.json.builder.JsonItemReaderBuilder;
 import org.springframework.batch.infrastructure.item.xml.StaxEventItemReader;
 import org.springframework.batch.infrastructure.item.xml.builder.StaxEventItemReaderBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.ResourcePatternResolver;
+
+import java.io.IOException;
+import java.util.Arrays;
 
 @Configuration
+@RequiredArgsConstructor
 public class TransactionReaderConfig {
 
+    private final ResourcePatternResolver resolver;
+
     @Bean
-    public FlatFileItemReader<Transaction> csvFileReader() {
-        return new FlatFileItemReaderBuilder<Transaction>()
-                .name("csvFileReader")
-                .resource(new FileSystemResource("/.data/banco_a_transacoes.csv"))
+    public TransactionReader reader() throws IOException {
+        return new TransactionReader(csvFileReader(), jsonFileReader(), xmlFileReader());
+    }
+
+    @Bean
+    public MultiResourceItemReader<Transaction> csvFileReader() throws IOException {
+        Resource[] resources = resolver.getResources("file:.data/*.csv");
+        var file = getFileNameByResource(resources);
+
+        FlatFileItemReader<Transaction> delegate = new FlatFileItemReaderBuilder<Transaction>()
+                .name("csvFileDelegate")
                 .linesToSkip(1)
-                .targetType(Transaction.class)
+                .fieldSetMapper(new TransactionFieldMapper(file))
                 .delimited()
                 .delimiter(",")
-                .names("id", "clientId", "clientName", "value", "dueDate", "status")
+                .names("clientId", "clientName", "value", "date", "status")
                 .build();
+
+        return new MultiResourceItemReaderBuilder<Transaction>()
+                .name("csvFileReader")
+                .resources(resources)
+                .delegate(delegate)
+                .build();
+
     }
 
     @Bean
-    public JsonItemReader<Transaction> jsonFileReader() {
-        return new JsonItemReaderBuilder<Transaction>()
+    public MultiResourceItemReader<Transaction> jsonFileReader() throws IOException {
+        Resource[] resources = resolver.getResources("file:.data/*.json");
+        var fileName = getFileNameByResource(resources);
+
+        JsonItemReader<Transaction> delegate = new JsonItemReaderBuilder<Transaction>()
+                .name("jsonFileDelegate")
+                .jsonObjectReader(new TransactionJsonReader(fileName))
+                .build();
+
+        return new MultiResourceItemReaderBuilder<Transaction>()
                 .name("jsonFileReader")
-                .resource(new FileSystemResource("/.data/banco_b_transacoes.json"))
-                .jsonObjectReader(new JacksonJsonObjectReader<>(Transaction.class))
+                .resources(resources)
+                .delegate(delegate)
                 .build();
     }
 
     @Bean
-    public StaxEventItemReader<Transaction> xmlFileReader() {
-        return new StaxEventItemReaderBuilder<Transaction>()
-                .name("xmlFileReader")
-                .resource(new FileSystemResource("/.data/operadora_cartao_transacoes.xml"))
+    public MultiResourceItemReader<Transaction> xmlFileReader() throws IOException {
+        Resource[] resources = resolver.getResources("file:.data/*.xml");
+        var fileName = getFileNameByResource(resources);
+
+        StaxEventItemReader<Transaction> delegate = new StaxEventItemReaderBuilder<Transaction>()
+                .name("xmlFileDelegate")
                 .addFragmentRootElements("Transacao")
-                .unmarshaller()
+                .unmarshaller(new TransactionUnmarshaller(fileName))
                 .build();
+
+        return new MultiResourceItemReaderBuilder<Transaction>()
+                .name("xmlFileReader")
+                .resources(resources)
+                .delegate(delegate)
+                .build();
+    }
+
+    private String getFileNameByResource(Resource [] resources) {
+        return Arrays.stream(resources).findFirst().orElseThrow(() -> new RuntimeException("not a file")).getFilename();
     }
 
 }
