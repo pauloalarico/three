@@ -1,17 +1,23 @@
 package org.larik.three.domain.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.larik.three.domain.enums.PaymentStatus;
 
-import java.time.LocalDate;
+import java.math.BigDecimal;
 
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Payment {
 
-    private String paymentValue;
+    private BigDecimal value;
 
-    private LocalDate paymentDate;
+    private String date;
 
-    private PaymentStatus paymentStatus;
+    private PaymentStatus status;
 
 }

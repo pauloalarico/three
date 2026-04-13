@@ -10,6 +10,7 @@ import org.springframework.data.annotation.Id;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+
 public class Transaction {
 
     @Id
