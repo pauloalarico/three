@@ -5,17 +5,17 @@ import org.larik.three.domain.model.Transaction;
 import org.springframework.batch.infrastructure.item.ExecutionContext;
 import org.springframework.batch.infrastructure.item.ItemStreamException;
 import org.springframework.batch.infrastructure.item.ItemStreamReader;
-import org.springframework.batch.infrastructure.item.file.FlatFileItemReader;
-import org.springframework.batch.infrastructure.item.json.JsonItemReader;
-import org.springframework.batch.infrastructure.item.xml.StaxEventItemReader;
+import org.springframework.batch.infrastructure.item.file.MultiResourceItemReader;
 
 public class TransactionReader implements ItemStreamReader<Transaction> {
 
-    private final FlatFileItemReader<Transaction> csvReader;
+    private final MultiResourceItemReader<Transaction> csvReader;
 
-    private final JsonItemReader<Transaction> jsonReader;
+    private final MultiResourceItemReader<Transaction> jsonReader;
 
-    private final StaxEventItemReader<Transaction> xmlReader;
+    private final MultiResourceItemReader<Transaction> xmlReader;
+
+    private ExecutionContext executionContext;
 
     private boolean isCsvFinished = false;
 
@@ -25,9 +25,9 @@ public class TransactionReader implements ItemStreamReader<Transaction> {
 
     private static final String JSON_FINISHED = "transactionReader:isJsonFinished";
 
-    public TransactionReader(FlatFileItemReader<Transaction> csvReader,
-                             JsonItemReader<Transaction> jsonReader,
-                             StaxEventItemReader<Transaction> xmlReader) {
+    public TransactionReader(MultiResourceItemReader<Transaction> csvReader,
+                             MultiResourceItemReader<Transaction> jsonReader,
+                             MultiResourceItemReader<Transaction> xmlReader) {
         this.csvReader = csvReader;
         this.jsonReader = jsonReader;
         this.xmlReader = xmlReader;
@@ -45,7 +45,7 @@ public class TransactionReader implements ItemStreamReader<Transaction> {
 
             isCsvFinished = true;
             csvReader.close();
-            jsonReader.open(new ExecutionContext());
+            jsonReader.open(executionContext);
         }
 
 
@@ -58,7 +58,7 @@ public class TransactionReader implements ItemStreamReader<Transaction> {
 
             isJsonFinished = true;
             jsonReader.close();
-            xmlReader.open(new ExecutionContext());
+            xmlReader.open(executionContext);
         }
 
         return xmlReader.read();
@@ -66,6 +66,7 @@ public class TransactionReader implements ItemStreamReader<Transaction> {
 
     @Override
     public void open(ExecutionContext executionContext) throws ItemStreamException {
+        this.executionContext = executionContext;
         this.isCsvFinished = executionContext.getInt(CSV_FINISHED, 0) == 1;
         this.isJsonFinished = executionContext.getInt(JSON_FINISHED, 0) == 1;
 
