@@ -1,4 +1,4 @@
-package org.larik.three.infra.batch.reader.util;
+package org.larik.three.infra.batch.reader.utils;
 
 import lombok.RequiredArgsConstructor;
 import org.larik.three.domain.enums.PaymentStatus;

@@ -1,10 +1,11 @@
-package org.larik.three.infra.batch.reader;
+package org.larik.three.infra.batch.reader.config;
 
 import lombok.RequiredArgsConstructor;
 import org.larik.three.domain.model.Transaction;
-import org.larik.three.infra.batch.reader.util.TransactionFieldMapper;
-import org.larik.three.infra.batch.reader.util.TransactionJsonReader;
-import org.larik.three.infra.batch.reader.util.TransactionUnmarshaller;
+import org.larik.three.infra.batch.reader.TransactionReader;
+import org.larik.three.infra.batch.reader.utils.TransactionFieldMapper;
+import org.larik.three.infra.batch.reader.utils.TransactionJsonReader;
+import org.larik.three.infra.batch.reader.utils.TransactionUnmarshaller;
 import org.springframework.batch.infrastructure.item.file.FlatFileItemReader;
 import org.springframework.batch.infrastructure.item.file.MultiResourceItemReader;
 import org.springframework.batch.infrastructure.item.file.builder.FlatFileItemReaderBuilder;
