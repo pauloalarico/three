@@ -3,7 +3,6 @@ package org.larik.three.infra.batch.reader.config;
 import lombok.RequiredArgsConstructor;
 import org.larik.three.domain.model.Transaction;
 import org.larik.three.infra.batch.reader.TransactionAsyncReader;
-import org.larik.three.infra.batch.reader.TransactionReader;
 import org.larik.three.infra.batch.reader.utils.TransactionFieldMapper;
 import org.larik.three.infra.batch.reader.utils.TransactionJsonReader;
 import org.larik.three.infra.batch.reader.utils.TransactionUnmarshaller;
@@ -33,7 +32,6 @@ public class TransactionReaderConfig {
     @Bean
     @StepScope
     public TransactionAsyncReader reader() throws IOException {
-        //return new TransactionReader(csvFileReader(), jsonFileReader(), xmlFileReader());
         return new TransactionAsyncReader(csvFileReader(), jsonFileReader(), xmlFileReader());
     }
 
