@@ -15,10 +15,10 @@ public class TransactionPartitionerConfig {
     @Bean
     public Step partitioner(JobRepository jobRepository, Step step, TaskExecutor taskExecutor) {
         return new StepBuilder("thread-partitioner", jobRepository)
-                .partitioner("partition-reader", new MultiResourcePartitioner())
+                .partitioner("partition-reader", new TransactionPartitioner())
                 .step(step)
                 .taskExecutor(taskExecutor)
-                .gridSize(4)
+                .gridSize(3)
                 .build();
     }
 
@@ -30,6 +30,7 @@ public class TransactionPartitionerConfig {
         executor.setQueueCapacity(3);
         executor.setMaxPoolSize(3);
         executor.setThreadNamePrefix("transaction-");
+        executor.initialize();
         return executor;
     }
 }

@@ -2,7 +2,7 @@ package org.larik.three.infra.batch.job;
 
 import org.larik.three.domain.model.Transaction;
 import org.larik.three.infra.batch.processor.TransactionFileProcessor;
-import org.larik.three.infra.batch.reader.TransactionReader;
+import org.larik.three.infra.batch.reader.TransactionAsyncReader;
 import org.springframework.batch.core.job.Job;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.job.parameters.RunIdIncrementer;
@@ -17,16 +17,16 @@ import org.springframework.context.annotation.Configuration;
 public class TransactionJobConfig {
 
     @Bean
-    public Job job (Step step, JobRepository jobRepository) {
+    public Job job (Step partitioner, JobRepository jobRepository) {
         return new JobBuilder("sdsd", jobRepository)
-                .start(step)
+                .start(partitioner)
                 .incrementer(new RunIdIncrementer())
                 .build();
     }
 
     @Bean
     public Step step(JobRepository jobRepository,
-                     TransactionReader reader,
+                     TransactionAsyncReader reader,
                      TransactionFileProcessor processor,
                      ItemWriter<Transaction> writer) {
         return new StepBuilder("teste", jobRepository)
