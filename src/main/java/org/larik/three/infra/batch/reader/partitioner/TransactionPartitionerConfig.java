@@ -27,8 +27,8 @@ public class TransactionPartitionerConfig {
     public TaskExecutor taskExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setCorePoolSize(3);
-        executor.setQueueCapacity(3);
-        executor.setMaxPoolSize(3);
+        executor.setQueueCapacity(100);
+        executor.setMaxPoolSize(4);
         executor.setThreadNamePrefix("transaction-");
         return executor;
     }

@@ -10,8 +10,13 @@ import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.Step;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.infrastructure.item.ItemWriter;
+import org.springframework.batch.integration.async.AsyncItemProcessor;
+import org.springframework.batch.integration.async.AsyncItemWriter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.task.TaskExecutor;
+
+import java.util.concurrent.Future;
 
 @Configuration
 public class TransactionJobConfig {
@@ -27,13 +32,25 @@ public class TransactionJobConfig {
     @Bean
     public Step step(JobRepository jobRepository,
                      TransactionReader reader,
-                     TransactionFileProcessor processor,
-                     ItemWriter<Transaction> writer) {
+                     AsyncItemProcessor<Transaction, Transaction> processor,
+                     AsyncItemWriter<Transaction> writer) {
         return new StepBuilder("teste", jobRepository)
-                .<Transaction, Transaction>chunk(100)
+                .<Transaction, Future<Transaction>>chunk(100)
                 .reader(reader)
                 .processor(processor)
                 .writer(writer)
                 .build();
+    }
+
+    @Bean
+    public AsyncItemProcessor<Transaction, Transaction> asyncItemProcessor(TransactionFileProcessor processor, TaskExecutor taskExecutor) {
+        AsyncItemProcessor<Transaction, Transaction> asyncProcessor = new AsyncItemProcessor<>(processor);
+        asyncProcessor.setTaskExecutor(taskExecutor);
+        return asyncProcessor;
+    }
+
+    @Bean
+    public AsyncItemWriter<Transaction> asyncItemWriter(ItemWriter<Transaction> writer) {
+        return new AsyncItemWriter<>(writer);
     }
 }
