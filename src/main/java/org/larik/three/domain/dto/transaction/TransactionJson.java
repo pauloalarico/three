@@ -1,4 +1,4 @@
-package org.larik.three.domain.dto;
+package org.larik.three.domain.dto.transaction;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

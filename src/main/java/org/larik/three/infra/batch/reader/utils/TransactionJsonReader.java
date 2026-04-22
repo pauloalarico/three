@@ -2,7 +2,7 @@ package org.larik.three.infra.batch.reader.utils;
 
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.Nullable;
-import org.larik.three.domain.dto.TransactionJson;
+import org.larik.three.domain.dto.transaction.TransactionJson;
 import org.larik.three.domain.enums.PaymentStatus;
 import org.larik.three.domain.model.Client;
 import org.larik.three.domain.model.Payment;

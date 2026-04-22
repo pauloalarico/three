@@ -1,6 +1,6 @@
 package org.larik.three.infra.batch.reader.utils;
 
-import org.larik.three.domain.dto.TransactionXml;
+import org.larik.three.domain.dto.transaction.TransactionXml;
 import org.larik.three.domain.enums.PaymentStatus;
 import org.larik.three.domain.model.Client;
 import org.larik.three.domain.model.Payment;

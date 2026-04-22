@@ -1,4 +1,4 @@
-    package org.larik.three.domain.dto;
+    package org.larik.three.domain.dto.transaction;
 
     import jakarta.xml.bind.annotation.XmlAccessType;
     import jakarta.xml.bind.annotation.XmlAccessorType;
