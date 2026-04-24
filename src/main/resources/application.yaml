@@ -35,3 +35,4 @@ spring:
 
 app:
   mongoCollection: ${COLLECTION_THREE}
+  maxValueDifference: ${MAX_VALUE}
