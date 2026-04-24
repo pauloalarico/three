@@ -1,37 +1,131 @@
 [
     {
-        "clientId": 1,
-        "clientName": "Joao Silva",
-        "amount": 2500.00,
-        "date": "2025-03-01",
-        "status": "APROVADA"
-    },
-    {
-        "clientId": 2,
-        "clientName": "Maria Souza",
-        "amount": 1800.50,
-        "date": "2025-03-02",
-        "status": "PENDENTE"
-    },
-    {
-        "clientId": 3,
-        "clientName": "Carlos Pereira",
-        "amount": 3200.75,
+        "clientId": 33,
+        "clientName": "Vitor Cunha",
+        "amount": 1500.00,
         "date": "2025-03-03",
         "status": "RECUSADA"
     },
     {
-        "clientId": 6,
-        "clientName": "Fernanda Lima",
-        "amount": 850.00,
-        "date": "2025-03-06",
+        "clientId": 34,
+        "clientName": "Marina Borges",
+        "amount": 2600.00,
+        "date": "2025-03-04",
+        "status": "APROVADA"
+    },
+    {
+        "clientId": 35,
+        "clientName": "Andre Farias",
+        "amount": 3100.00,
+        "date": "2025-03-05",
         "status": "PENDENTE"
     },
     {
-        "clientId": 9,
-        "clientName": "Rafael Gomes",
-        "amount": 1500.00,
+        "clientId": 36,
+        "clientName": "Julio Cesar",
+        "amount": 950.00,
+        "date": "2025-03-06",
+        "status": "APROVADA"
+    },
+    {
+        "clientId": 37,
+        "clientName": "Tatiane Gomes",
+        "amount": 700.00,
+        "date": "2025-03-07",
+        "status": "RECUSADA"
+    },
+
+    {
+        "clientId": 38,
+        "clientName": "Bruna Azevedo",
+        "amount": 4200.00,
+        "date": "2025-03-08",
+        "status": "APROVADA"
+    },
+    {
+        "clientId": 39,
+        "clientName": "Hugo Freitas",
+        "amount": 1100.00,
         "date": "2025-03-09",
+        "status": "APROVADA"
+    },
+    {
+        "clientId": 40,
+        "clientName": "Luciana Prado",
+        "amount": 2000.00,
+        "date": "2025-03-10",
+        "status": "APROVADA"
+    },
+    {
+        "clientId": 41,
+        "clientName": "Caio Batista",
+        "amount": 1700.00,
+        "date": "2025-03-11",
+        "status": "RECUSADA"
+    },
+    {
+        "clientId": 42,
+        "clientName": "Elaine Rocha",
+        "amount": 800.00,
+        "date": "2025-03-12",
+        "status": "APROVADA"
+    },
+
+    {
+        "clientId": 43,
+        "clientName": "Fabio Cardoso",
+        "amount": 1900.00,
+        "date": "2025-03-13",
+        "status": "PENDENTE"
+    },
+    {
+        "clientId": 44,
+        "clientName": "Cintia Moreira",
+        "amount": 2400.00,
+        "date": "2025-03-14",
+        "status": "APROVADA"
+    },
+    {
+        "clientId": 45,
+        "clientName": "Otavio Monteiro",
+        "amount": 3600.00,
+        "date": "2025-03-15",
+        "status": "APROVADA"
+    },
+    {
+        "clientId": 46,
+        "clientName": "Renan Barros",
+        "amount": 2100.00,
+        "date": "2025-03-16",
+        "status": "APROVADA"
+    },
+    {
+        "clientId": 47,
+        "clientName": "Denise Fonseca",
+        "amount": 950.00,
+        "date": "2025-03-17",
+        "status": "PENDENTE"
+    },
+
+    {
+        "clientId": 48,
+        "clientName": "Igor Teixeira",
+        "amount": 1300.00,
+        "date": "2025-03-18",
+        "status": "APROVADA"
+    },
+    {
+        "clientId": 49,
+        "clientName": "Monica Carvalho",
+        "amount": 2800.00,
+        "date": "2025-03-19",
+        "status": "RECUSADA"
+    },
+    {
+        "clientId": 50,
+        "clientName": "Paulo Nogueira",
+        "amount": 5000.00,
+        "date": "2025-03-21",
         "status": "APROVADA"
     }
 ]

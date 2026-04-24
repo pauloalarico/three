@@ -1,33 +1,125 @@
 <Transacoes>
     <Transacao>
-        <ClienteCodigo>1</ClienteCodigo>
-        <ClienteNome>João Silva</ClienteNome>
-        <Valor>2500.00</Valor>
-        <Data>2025-03-01</Data>
+        <ClienteCodigo>17</ClienteCodigo>
+        <ClienteNome>Rodrigo Nunes</ClienteNome>
+        <Valor>1800.00</Valor>
+        <Data>2025-03-17</Data>
+        <Situacao>PENDENTE</Situacao>
+    </Transacao>
+    <Transacao>
+        <ClienteCodigo>18</ClienteCodigo>
+        <ClienteNome>Patricia Freitas</ClienteNome>
+        <Valor>2000.00</Valor>
+        <Data>2025-03-18</Data>
         <Situacao>APROVADA</Situacao>
     </Transacao>
-
     <Transacao>
-        <ClienteCodigo>3</ClienteCodigo>
-        <ClienteNome>Carlos Pereira</ClienteNome>
-        <Valor>3200.75</Valor>
-        <Data>2025-03-04</Data> <!-- data errada -->
+        <ClienteCodigo>19</ClienteCodigo>
+        <ClienteNome>Gustavo Almeida</ClienteNome>
+        <Valor>410.00</Valor>
+        <Data>2025-03-19</Data>
         <Situacao>APROVADA</Situacao>
     </Transacao>
-
-    <Transacao>
-        <ClienteCodigo>5</ClienteCodigo>
-        <ClienteNome>Lucas Fernandes</ClienteNome>
-        <Valor>4100.90</Valor>
-        <Data>2025-03-05</Data>
-        <Situacao>PENDENTE</Situacao> <!-- status errado -->
-    </Transacao>
-
     <Transacao>
         <ClienteCodigo>20</ClienteCodigo>
         <ClienteNome>Beatriz Melo</ClienteNome>
         <Valor>3500.00</Valor>
         <Data>2025-03-20</Data>
         <Situacao>APROVADA</Situacao>
+    </Transacao>
+    <Transacao>
+        <ClienteCodigo>21</ClienteCodigo>
+        <ClienteNome>Marcelo Pinto</ClienteNome>
+        <Valor>2700.00</Valor>
+        <Data>2025-03-22</Data>
+        <Situacao>PENDENTE</Situacao>
+    </Transacao>
+
+    <Transacao>
+        <ClienteCodigo>22</ClienteCodigo>
+        <ClienteNome>Carla Moura</ClienteNome>
+        <Valor>800.00</Valor>
+        <Data>2025-03-22</Data>
+        <Situacao>APROVADA</Situacao>
+    </Transacao>
+
+    <Transacao>
+        <ClienteCodigo>23</ClienteCodigo>
+        <ClienteNome>Thiago Lopes</ClienteNome>
+        <Valor>1500.00</Valor>
+        <Data>2025-03-23</Data>
+        <Situacao>RECUSADA</Situacao>
+    </Transacao>
+
+    <Transacao>
+        <ClienteCodigo>24</ClienteCodigo>
+        <ClienteNome>Renata Castro</ClienteNome>
+        <Valor>3100.00</Valor>
+        <Data>2025-03-24</Data>
+        <Situacao>RECUSADA</Situacao>
+    </Transacao>
+
+    <Transacao>
+        <ClienteCodigo>25</ClienteCodigo>
+        <ClienteNome>Eduardo Vieira</ClienteNome>
+        <Valor>2200.00</Valor>
+        <Data>2025-03-25</Data>
+        <Situacao>PENDENTE</Situacao>
+    </Transacao>
+
+    <Transacao>
+        <ClienteCodigo>26</ClienteCodigo>
+        <ClienteNome>Daniel Ramos</ClienteNome>
+        <Valor>1200.00</Valor>
+        <Data>2025-03-26</Data>
+        <Situacao>APROVADA</Situacao>
+    </Transacao>
+
+    <Transacao>
+        <ClienteCodigo>27</ClienteCodigo>
+        <ClienteNome>Sandra Martins</ClienteNome>
+        <Valor>900.00</Valor>
+        <Data>2025-03-27</Data>
+        <Situacao>RECUSADA</Situacao>
+    </Transacao>
+
+    <Transacao>
+        <ClienteCodigo>28</ClienteCodigo>
+        <ClienteNome>Claudio Rocha</ClienteNome>
+        <Valor>2000.00</Valor>
+        <Data>2025-03-28</Data>
+        <Situacao>APROVADA</Situacao>
+    </Transacao>
+
+    <Transacao>
+        <ClienteCodigo>29</ClienteCodigo>
+        <ClienteNome>Simone Duarte</ClienteNome>
+        <Valor>2800.00</Valor>
+        <Data>2025-03-29</Data>
+        <Situacao>PENDENTE</Situacao>
+    </Transacao>
+
+    <Transacao>
+        <ClienteCodigo>30</ClienteCodigo>
+        <ClienteNome>Ricardo Pires</ClienteNome>
+        <Valor>3300.00</Valor>
+        <Data>2025-03-30</Data>
+        <Situacao>APROVADA</Situacao>
+    </Transacao>
+
+    <Transacao>
+        <ClienteCodigo>31</ClienteCodigo>
+        <ClienteNome>Leandro Tavares</ClienteNome>
+        <Valor>4100.00</Valor>
+        <Data>2025-03-01</Data>
+        <Situacao>APROVADA</Situacao>
+    </Transacao>
+
+    <Transacao>
+        <ClienteCodigo>32</ClienteCodigo>
+        <ClienteNome>Paula Rezende</ClienteNome>
+        <Valor>800.00</Valor>
+        <Data>2025-03-02</Data>
+        <Situacao>PENDENTE</Situacao>
     </Transacao>
 </Transacoes>
