@@ -2,6 +2,7 @@ package org.larik.three.infra.batch.reader.config;
 
 import lombok.RequiredArgsConstructor;
 import org.larik.three.domain.model.Transaction;
+import org.larik.three.domain.valueobject.TransactionTrustSource;
 import org.larik.three.infra.batch.reader.ComparisonTransactionReader;
 import org.springframework.batch.infrastructure.item.ItemStreamReader;
 import org.springframework.batch.infrastructure.item.data.builder.MongoCursorItemReaderBuilder;
@@ -9,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Query;
 
 import java.util.Collections;
 
@@ -20,7 +22,7 @@ public class ComparisonReaderConfig {
 
     @Bean
     public ComparisonTransactionReader comparisonTransactionReader(ItemStreamReader<Transaction> rawTransactionReader,
-                                                                   ItemStreamReader<Transaction> expectedTransactionsReader) {
+                                                                   ItemStreamReader<TransactionTrustSource> expectedTransactionsReader) {
         return new ComparisonTransactionReader(rawTransactionReader, expectedTransactionsReader);
     }
 
@@ -28,21 +30,23 @@ public class ComparisonReaderConfig {
     public ItemStreamReader<Transaction> rawTransactionReader() {
         return new MongoCursorItemReaderBuilder<Transaction>()
                 .name("raw-tramsaction-reader")
-                .collection("writer-test")
+                .collection("writer-teste")
                 .template(mongoTemplate)
+                .query(new Query())
                 .targetType(Transaction.class)
-                .sorts(Collections.singletonMap("clientId", Sort.Direction.ASC))
+                .sorts(Collections.singletonMap("client.clientId", Sort.Direction.ASC))
                 .build();
     }
 
     @Bean
-    public ItemStreamReader<Transaction> expectedTransactionsReader() {
-        return new MongoCursorItemReaderBuilder<Transaction>()
+    public ItemStreamReader<TransactionTrustSource> expectedTransactionsReader() {
+        return new MongoCursorItemReaderBuilder<TransactionTrustSource>()
                 .name("raw-tramsaction-reader")
                 .collection("trust-source")
                 .template(mongoTemplate)
-                .targetType(Transaction.class)
-                .sorts(Collections.singletonMap("client.clientId", Sort.Direction.ASC))
+                .query(new Query())
+                .targetType(TransactionTrustSource.class)
+                .sorts(Collections.singletonMap("clientId", Sort.Direction.ASC))
                 .build();
     }
 
