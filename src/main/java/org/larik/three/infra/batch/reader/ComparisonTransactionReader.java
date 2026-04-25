@@ -3,6 +3,8 @@ package org.larik.three.infra.batch.reader;
 import org.jspecify.annotations.Nullable;
 import org.larik.three.domain.dto.comparison.ComparisonTransaction;
 import org.larik.three.domain.model.Transaction;
+import org.larik.three.domain.utils.TransactionMapper;
+import org.larik.three.domain.valueobject.TransactionTrustSource;
 import org.springframework.batch.infrastructure.item.ExecutionContext;
 import org.springframework.batch.infrastructure.item.ItemStreamException;
 import org.springframework.batch.infrastructure.item.ItemStreamReader;
@@ -13,13 +15,13 @@ public class ComparisonTransactionReader implements ItemStreamReader<ComparisonT
 
     private final ItemStreamReader<Transaction> rawTransactionReader;
 
-    private final ItemStreamReader<Transaction> expectedTransactionReader;
+    private final ItemStreamReader<TransactionTrustSource> expectedTransactionReader;
 
     private static final String RAW_PREFIX = "raw.";
 
     private static final String EXPECTED_PREFIX = "expected.";
 
-    public ComparisonTransactionReader(ItemStreamReader<Transaction> rawTransactionReader, ItemStreamReader<Transaction> expectedTransactionReader) {
+    public ComparisonTransactionReader(ItemStreamReader<Transaction> rawTransactionReader, ItemStreamReader<TransactionTrustSource> expectedTransactionReader) {
         this.rawTransactionReader = rawTransactionReader;
         this.expectedTransactionReader = expectedTransactionReader;
     }
@@ -33,7 +35,10 @@ public class ComparisonTransactionReader implements ItemStreamReader<ComparisonT
             return null;
         }
 
-        return new ComparisonTransaction(rawTransaction, expectedTransaction);
+        var trustTransaction = expectedTransaction != null ? TransactionMapper.toTransaction(expectedTransaction)
+                : null;
+
+        return new ComparisonTransaction(rawTransaction, trustTransaction);
     }
 
     @Override
