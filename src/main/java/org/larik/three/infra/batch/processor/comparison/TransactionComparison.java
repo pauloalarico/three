@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class TransactionComparison implements ItemProcessor<ComparisonTransaction, ComparisonTransactionResult> {
 
-    @Value("${app.mongoCollection}")
+    @Value("${app.maxValueDifference}")
     private String maxValueDiff;
 
     @Override
@@ -37,7 +37,7 @@ public class TransactionComparison implements ItemProcessor<ComparisonTransactio
                     : new ComparisonTransactionResult(raw, expected, ComparisonTransactionResult.ComparisonStatus.MATCHED);
         }
 
-        return new ComparisonTransactionResult(raw, expected, ComparisonTransactionResult.ComparisonStatus.UNEXPECTED);
+        return new ComparisonTransactionResult(raw, expected, ComparisonTransactionResult.ComparisonStatus.DIVERGENT);
     }
 
 }
