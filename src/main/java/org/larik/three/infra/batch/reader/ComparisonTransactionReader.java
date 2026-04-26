@@ -1,5 +1,6 @@
 package org.larik.three.infra.batch.reader;
 
+import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.Nullable;
 import org.larik.three.domain.dto.comparison.ComparisonTransaction;
 import org.larik.three.domain.model.Transaction;
@@ -8,9 +9,9 @@ import org.larik.three.domain.valueobject.TransactionTrustSource;
 import org.springframework.batch.infrastructure.item.ExecutionContext;
 import org.springframework.batch.infrastructure.item.ItemStreamException;
 import org.springframework.batch.infrastructure.item.ItemStreamReader;
-import org.springframework.stereotype.Component;
 
-@Component
+
+@Slf4j
 public class ComparisonTransactionReader implements ItemStreamReader<ComparisonTransaction> {
 
     private final ItemStreamReader<Transaction> rawTransactionReader;
@@ -21,6 +22,10 @@ public class ComparisonTransactionReader implements ItemStreamReader<ComparisonT
 
     private static final String EXPECTED_PREFIX = "expected.";
 
+    private Transaction rawBuffer;
+
+    private Transaction expectedBuffer;
+
     public ComparisonTransactionReader(ItemStreamReader<Transaction> rawTransactionReader, ItemStreamReader<TransactionTrustSource> expectedTransactionReader) {
         this.rawTransactionReader = rawTransactionReader;
         this.expectedTransactionReader = expectedTransactionReader;
@@ -28,17 +33,53 @@ public class ComparisonTransactionReader implements ItemStreamReader<ComparisonT
 
     @Override
     public @Nullable ComparisonTransaction read() throws Exception {
-        var rawTransaction = rawTransactionReader.read();
-        var expectedTransaction = expectedTransactionReader.read();
+        if (rawBuffer == null) {
+            rawBuffer = rawTransactionReader.read();
+        }
 
-        if (rawTransaction == null && expectedTransaction == null) {
+        if (expectedBuffer == null) {
+            TransactionTrustSource buffer = expectedTransactionReader.read();
+            expectedBuffer = buffer != null ? TransactionMapper.toTransaction(buffer) : null;
+        }
+
+        if (rawBuffer == null && expectedBuffer == null) {
             return null;
         }
 
-        var trustTransaction = expectedTransaction != null ? TransactionMapper.toTransaction(expectedTransaction)
-                : null;
+        if (rawBuffer == null) {
+            var comparison = new ComparisonTransaction(null, expectedBuffer);
+            expectedBuffer = null;
+            return comparison;
 
-        return new ComparisonTransaction(rawTransaction, trustTransaction);
+        }
+        if (expectedBuffer == null) {
+            var comparison = new ComparisonTransaction(rawBuffer, null);
+            rawBuffer = null;
+            return comparison;
+        }
+
+        log.info("raw client: {}, expected: {}", rawBuffer.getClient().getClientId(), expectedBuffer.getClient().getClientId() );
+
+        Long rawClientId = rawBuffer.getClient().getClientId();
+        Long expectedClientId = expectedBuffer.getClient().getClientId();
+        int compareToExpected = rawClientId.compareTo(expectedClientId);
+
+        log.info("comparision: {}", compareToExpected);
+
+        if (compareToExpected == 0) {
+            var comparison = new ComparisonTransaction(rawBuffer, expectedBuffer);
+            rawBuffer = null;
+            expectedBuffer = null;
+            return comparison;
+        } else if (compareToExpected < 0) {
+            var comparison = new ComparisonTransaction(rawBuffer, null);
+            rawBuffer = null;
+            return comparison;
+        } else {
+            var comparison = new ComparisonTransaction(null, expectedBuffer);
+            expectedBuffer = null;
+            return comparison;
+        }
     }
 
     @Override
@@ -76,7 +117,7 @@ public class ComparisonTransactionReader implements ItemStreamReader<ComparisonT
 
 
     private void mergeExecutionChild(ExecutionContext executionContext, ExecutionContext ctxChild, String readerPrefix) {
-         ctxChild.entrySet()
+        ctxChild.entrySet()
                 .forEach(e -> executionContext.put(readerPrefix + e.getKey(), e.getValue()));
     }
 }
