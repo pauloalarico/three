@@ -26,6 +26,10 @@ public class ComparisonReaderConfig {
         return new ComparisonTransactionReader(rawTransactionReader, expectedTransactionsReader);
     }
 
+    /*
+    * Here is the trick for the paralleling reading. The Cursor reads by order and not saving the state of the threads
+    * TODO implement a execution ctx save but saving the sort to not loosing the sort.
+     */
     @Bean
     public ItemStreamReader<Transaction> rawTransactionReader() {
         return new MongoCursorItemReaderBuilder<Transaction>()
@@ -34,6 +38,7 @@ public class ComparisonReaderConfig {
                 .template(mongoTemplate)
                 .query(new Query())
                 .targetType(Transaction.class)
+                .saveState(false)
                 .sorts(Collections.singletonMap("client.clientId", Sort.Direction.ASC))
                 .build();
     }
