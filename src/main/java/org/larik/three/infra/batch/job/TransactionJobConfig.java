@@ -11,6 +11,7 @@ import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.Step;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.infrastructure.item.ItemWriter;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.TaskExecutor;
@@ -19,15 +20,16 @@ import org.springframework.core.task.TaskExecutor;
 public class TransactionJobConfig {
 
     @Bean
-    public Job job (Step step, JobRepository jobRepository) {
+    public Job job (@Qualifier("step") Step step, JobRepository jobRepository, @Qualifier("comparison") Step comparison) {
         return new JobBuilder("sdsd", jobRepository)
                 .start(step)
+                .next(comparison)
                 .incrementer(new RunIdIncrementer())
                 .build();
     }
 
     @Bean
-    public Step step(JobRepository jobRepository, Step step, TaskExecutor taskExecutor) {
+    public Step step(JobRepository jobRepository, @Qualifier("workerStep")Step step, TaskExecutor taskExecutor) {
         return new StepBuilder("thread-partitioner", jobRepository)
                 .partitioner("partition-reader", new TransactionPartitioner())
                 .step(step)
