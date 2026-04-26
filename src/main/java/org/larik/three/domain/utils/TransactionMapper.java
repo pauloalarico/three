@@ -6,6 +6,8 @@ import org.larik.three.domain.model.Payment;
 import org.larik.three.domain.model.Transaction;
 import org.larik.three.domain.valueobject.TransactionTrustSource;
 
+import java.math.RoundingMode;
+
 public class TransactionMapper {
 
     public static Transaction toTransaction(TransactionTrustSource valueObject) {
@@ -19,13 +21,17 @@ public class TransactionMapper {
                                 .build())
                 .payment(
                         Payment.builder()
-                                .value(valueObject.amount())
-                                .date(valueObject.date())
+                                .value(valueObject.amount().setScale(2, RoundingMode.HALF_UP))
+                                .date(removeTime(valueObject.date()))
                                 .status(PaymentStatus.getByLocalName(valueObject.status()))
                                 .build()
                 )
                 .fileOrigin(null)
                 .build();
 
+    }
+
+    private static String removeTime(String date) {
+        return date.split("T")[0];
     }
 }
