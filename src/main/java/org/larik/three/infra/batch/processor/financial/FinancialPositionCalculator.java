@@ -1,5 +1,6 @@
 package org.larik.three.infra.batch.processor.financial;
 
+import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.Nullable;
 import org.larik.three.domain.dto.comparison.ComparisonTransactionResult;
 import org.larik.three.domain.model.*;
@@ -10,9 +11,10 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 @Component
+@RequiredArgsConstructor
 public class FinancialPositionCalculator implements ItemProcessor<ComparisonTransactionResult, ProcessedTransaction>  {
 
-    private static final BigDecimal PERCENT = new BigDecimal("0.01");
+    private final BigDecimal selicTaxCalculator;
 
     private static final int[] MONTHS = {1,2,3};
 
@@ -29,8 +31,9 @@ public class FinancialPositionCalculator implements ItemProcessor<ComparisonTran
                         .build())
                 .status((item.status()))
                 .remittance(new Remittance(
-                        new ExpectedRemittance(raw.getPayment().getDate(), raw.getPayment().getValue()),
-                        new RawRemittance(expected.getPayment().getDate(), expected.getPayment().getValue()))
+                        new RawRemittance(raw.getPayment().getDate(), raw.getPayment().getValue()),
+                        new ExpectedRemittance(expected.getPayment().getDate(), expected.getPayment().getValue())
+                        )
                 )
                 .balance(Balance.builder()
                         .realBalance(raw.getPayment().getValue())
@@ -44,7 +47,7 @@ public class FinancialPositionCalculator implements ItemProcessor<ComparisonTran
     }
 
     private BigDecimal taxBalanceCalculator(BigDecimal value, int month) {
-        var tax = value.multiply(PERCENT).multiply(BigDecimal.valueOf(month));
+        var tax = value.multiply(selicTaxCalculator).multiply(BigDecimal.valueOf(month));
         return value.add(tax).setScale(2, RoundingMode.HALF_UP);
     }
 
