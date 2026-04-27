@@ -32,11 +32,14 @@ public class ComparisonReaderConfig {
      */
     @Bean
     public ItemStreamReader<Transaction> rawTransactionReader() {
+        Query query = new Query();
+        query.with(Sort.by(Sort.Direction.ASC, "client.clientId"));
+
         return new MongoCursorItemReaderBuilder<Transaction>()
                 .name("raw-tramsaction-reader")
                 .collection("writer-teste")
                 .template(mongoTemplate)
-                .query(new Query())
+                .query(query)
                 .targetType(Transaction.class)
                 .saveState(false)
                 .sorts(Collections.singletonMap("client.clientId", Sort.Direction.ASC))
