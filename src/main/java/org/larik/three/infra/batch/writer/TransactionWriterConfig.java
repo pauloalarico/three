@@ -2,6 +2,7 @@ package org.larik.three.infra.batch.writer;
 
 import lombok.RequiredArgsConstructor;
 import org.larik.three.domain.dto.comparison.ComparisonTransactionResult;
+import org.larik.three.domain.model.ProcessedTransaction;
 import org.larik.three.domain.model.Transaction;
 import org.springframework.batch.infrastructure.item.ItemWriter;
 import org.springframework.batch.infrastructure.item.data.MongoItemWriter;
@@ -36,5 +37,10 @@ public class TransactionWriterConfig {
         return writer;
     }
 
+    @Bean ItemWriter<ProcessedTransaction> writerFinancial() {
+        MongoItemWriter<ProcessedTransaction> writer = new MongoItemWriter<>(mongoTemplate);
+        writer.setCollection("financial_position");
+        return writer;
+    }
 
 }
