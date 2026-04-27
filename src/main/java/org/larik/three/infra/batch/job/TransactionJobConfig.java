@@ -1,5 +1,6 @@
 package org.larik.three.infra.batch.job;
 
+import lombok.extern.slf4j.Slf4j;
 import org.larik.three.domain.model.Transaction;
 import org.larik.three.infra.batch.processor.TransactionFileProcessor;
 import org.larik.three.infra.batch.reader.TransactionAsyncReader;
@@ -16,14 +17,17 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.TaskExecutor;
 
+@Slf4j
 @Configuration
 public class TransactionJobConfig {
 
     @Bean
-    public Job job (@Qualifier("step") Step step, JobRepository jobRepository, @Qualifier("comparison") Step comparison) {
-        return new JobBuilder("sdsd", jobRepository)
+    public Job job (@Qualifier("step") Step step, JobRepository jobRepository, @Qualifier("comparison") Step comparison,
+                    Step financialStep) {
+        return new JobBuilder("groovy", jobRepository)
                 .start(step)
                 .next(comparison)
+                .next(financialStep)
                 .incrementer(new RunIdIncrementer())
                 .build();
     }
