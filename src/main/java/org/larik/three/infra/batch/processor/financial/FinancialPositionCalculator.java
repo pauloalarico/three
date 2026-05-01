@@ -12,11 +12,11 @@ import java.math.RoundingMode;
 
 @Component
 @RequiredArgsConstructor
-public class FinancialPositionCalculator implements ItemProcessor<ComparisonTransactionResult, ProcessedTransaction>  {
+public class FinancialPositionCalculator implements ItemProcessor<ComparisonTransactionResult, ProcessedTransaction> {
 
     private final BigDecimal selicTaxCalculator;
 
-    private static final int[] MONTHS = {1,2,3};
+    private static final int[] MONTHS = {1, 2, 3};
 
     @Override
     public @Nullable ProcessedTransaction process(ComparisonTransactionResult item) throws Exception {
@@ -25,24 +25,35 @@ public class FinancialPositionCalculator implements ItemProcessor<ComparisonTran
         Transaction expected = item.expectedTransaction();
 
         return ProcessedTransaction.builder().
-                client(Client.builder()
-                        .clientId(raw.getClient().getClientId())
-                        .name(raw.getClient().getName())
-                        .build())
+                client(buildClient(raw))
                 .status((item.status()))
-                .remittance(new Remittance(
-                        new RawRemittance(raw.getPayment().getDate(), raw.getPayment().getValue()),
-                        new ExpectedRemittance(expected.getPayment().getDate(), expected.getPayment().getValue())
-                        )
-                )
-                .balance(Balance.builder()
-                        .realBalance(raw.getPayment().getValue())
-                        .expectedAmount(expected.getPayment().getValue())
-                        .balanceDifference(diff)
-                        .taxBalanceWithMonth(taxBalanceCalculator(raw.getPayment().getValue(), MONTHS[0]))
-                        .taxBalanceWithTwoMonths((taxBalanceCalculator(raw.getPayment().getValue(), MONTHS[1])))
-                        .taxBalanceWithThreeMonths((taxBalanceCalculator(raw.getPayment().getValue(), MONTHS[2])))
-                        .build())
+                .remittance(buildRemittance(raw, expected))
+                .balance(buildBalance(raw, expected, diff))
+                .build();
+    }
+
+    private Client buildClient(Transaction raw) {
+        return Client.builder()
+                .clientId(raw.getClient().getClientId())
+                .name(raw.getClient().getName())
+                .build();
+    }
+
+    private Remittance buildRemittance(Transaction raw, Transaction expected) {
+        return new Remittance(
+                new RawRemittance(raw.getPayment().getDate(), raw.getPayment().getValue()),
+                new ExpectedRemittance(expected.getPayment().getDate(), expected.getPayment().getValue())
+        );
+    }
+
+    private Balance buildBalance(Transaction raw, Transaction expected, BigDecimal diff) {
+        return Balance.builder()
+                .realBalance(raw.getPayment().getValue())
+                .expectedAmount(expected.getPayment().getValue())
+                .balanceDifference(diff)
+                .taxBalanceWithMonth(taxBalanceCalculator(raw.getPayment().getValue(), MONTHS[0]))
+                .taxBalanceWithTwoMonths((taxBalanceCalculator(raw.getPayment().getValue(), MONTHS[1])))
+                .taxBalanceWithThreeMonths((taxBalanceCalculator(raw.getPayment().getValue(), MONTHS[2])))
                 .build();
     }
 
