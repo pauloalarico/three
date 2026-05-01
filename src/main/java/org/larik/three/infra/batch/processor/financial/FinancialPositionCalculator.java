@@ -47,13 +47,15 @@ public class FinancialPositionCalculator implements ItemProcessor<ComparisonTran
     }
 
     private Balance buildBalance(Transaction raw, Transaction expected, BigDecimal diff) {
+        boolean isDiffZero = diff.compareTo(BigDecimal.ZERO) == 0;
+
         return Balance.builder()
                 .realBalance(raw.getPayment().getValue())
                 .expectedAmount(expected.getPayment().getValue())
                 .balanceDifference(diff)
-                .taxBalanceWithMonth(taxBalanceCalculator(raw.getPayment().getValue(), MONTHS[0]))
-                .taxBalanceWithTwoMonths((taxBalanceCalculator(raw.getPayment().getValue(), MONTHS[1])))
-                .taxBalanceWithThreeMonths((taxBalanceCalculator(raw.getPayment().getValue(), MONTHS[2])))
+                .taxBalanceWithMonth(taxBalanceCalculator(isDiffZero ? BigDecimal.ZERO : raw.getPayment().getValue(), MONTHS[0]))
+                .taxBalanceWithTwoMonths((taxBalanceCalculator(isDiffZero ? BigDecimal.ZERO : raw.getPayment().getValue(), MONTHS[1])))
+                .taxBalanceWithThreeMonths((taxBalanceCalculator(isDiffZero ? BigDecimal.ZERO : raw.getPayment().getValue(), MONTHS[2])))
                 .build();
     }
 
