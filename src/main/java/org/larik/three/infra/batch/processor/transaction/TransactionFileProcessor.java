@@ -1,4 +1,4 @@
-package org.larik.three.infra.batch.processor;
+package org.larik.three.infra.batch.processor.transaction;
 
 import org.jspecify.annotations.Nullable;
 import org.larik.three.domain.model.Transaction;
