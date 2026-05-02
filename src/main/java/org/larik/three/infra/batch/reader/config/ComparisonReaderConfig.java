@@ -3,7 +3,7 @@ package org.larik.three.infra.batch.reader.config;
 import lombok.RequiredArgsConstructor;
 import org.larik.three.domain.model.Transaction;
 import org.larik.three.domain.valueobject.TransactionTrustSource;
-import org.larik.three.infra.batch.reader.ComparisonTransactionReader;
+import org.larik.three.infra.batch.reader.impl.ComparisonTransactionReader;
 import org.springframework.batch.infrastructure.item.ItemStreamReader;
 import org.springframework.batch.infrastructure.item.data.builder.MongoCursorItemReaderBuilder;
 import org.springframework.context.annotation.Bean;

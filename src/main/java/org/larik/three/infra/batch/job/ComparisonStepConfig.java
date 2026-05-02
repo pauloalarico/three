@@ -3,7 +3,7 @@ package org.larik.three.infra.batch.job;
 import org.larik.three.domain.dto.comparison.ComparisonTransaction;
 import org.larik.three.domain.dto.comparison.ComparisonTransactionResult;
 import org.larik.three.infra.batch.processor.comparison.TransactionComparison;
-import org.larik.three.infra.batch.reader.ComparisonTransactionReader;
+import org.larik.three.infra.batch.reader.impl.ComparisonTransactionReader;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.Step;
 import org.springframework.batch.core.step.builder.StepBuilder;

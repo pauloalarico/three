@@ -1,4 +1,4 @@
-package org.larik.three.infra.batch.reader;
+package org.larik.three.infra.batch.reader.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.Nullable;

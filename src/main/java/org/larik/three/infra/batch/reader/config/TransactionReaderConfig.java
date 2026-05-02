@@ -2,7 +2,7 @@ package org.larik.three.infra.batch.reader.config;
 
 import lombok.RequiredArgsConstructor;
 import org.larik.three.domain.model.Transaction;
-import org.larik.three.infra.batch.reader.TransactionAsyncReader;
+import org.larik.three.infra.batch.reader.impl.TransactionAsyncReader;
 import org.larik.three.infra.batch.reader.utils.TransactionFieldMapper;
 import org.larik.three.infra.batch.reader.utils.TransactionJsonReader;
 import org.larik.three.infra.batch.reader.utils.TransactionUnmarshaller;

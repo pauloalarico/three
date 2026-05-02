@@ -1,4 +1,4 @@
-package org.larik.three.infra.batch.reader;
+package org.larik.three.infra.batch.reader.impl;
 
 import jakarta.annotation.PostConstruct;
 import org.jspecify.annotations.Nullable;
