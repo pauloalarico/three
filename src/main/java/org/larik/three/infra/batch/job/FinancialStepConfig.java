@@ -15,11 +15,11 @@ import org.springframework.context.annotation.Configuration;
 public class FinancialStepConfig {
 
     @Bean
-    public Step financialStep(JobRepository jobRepository, ItemReader<ComparisonTransactionResult> reader,
+    public Step financialStep(JobRepository jobRepository, ItemReader<ComparisonTransactionResult> readerComparison,
                               FinancialPositionCalculator processor, ItemWriter<ProcessedTransaction> writer) {
         return new StepBuilder("financialStep", jobRepository)
                 .<ComparisonTransactionResult, ProcessedTransaction>chunk(15)
-                .reader(reader)
+                .reader(readerComparison)
                 .processor(processor)
                 .writer(writer)
                 .build();
