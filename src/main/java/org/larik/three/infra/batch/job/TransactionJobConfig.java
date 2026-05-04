@@ -2,8 +2,8 @@ package org.larik.three.infra.batch.job;
 
 import lombok.extern.slf4j.Slf4j;
 import org.larik.three.domain.model.Transaction;
-import org.larik.three.infra.batch.processor.TransactionFileProcessor;
-import org.larik.three.infra.batch.reader.TransactionAsyncReader;
+import org.larik.three.infra.batch.processor.transaction.TransactionFileProcessor;
+import org.larik.three.infra.batch.reader.impl.TransactionAsyncReader;
 import org.larik.three.infra.batch.reader.partitioner.TransactionPartitioner;
 import org.springframework.batch.core.job.Job;
 import org.springframework.batch.core.job.builder.JobBuilder;
@@ -23,11 +23,12 @@ public class TransactionJobConfig {
 
     @Bean
     public Job job (@Qualifier("step") Step step, JobRepository jobRepository, @Qualifier("comparison") Step comparison,
-                    Step financialStep) {
-        return new JobBuilder("groovy", jobRepository)
+                    Step financialStep, Step parallelReportStep) {
+        return new JobBuilder("RRRx'", jobRepository)
                 .start(step)
                 .next(comparison)
                 .next(financialStep)
+                .next(parallelReportStep)
                 .incrementer(new RunIdIncrementer())
                 .build();
     }
