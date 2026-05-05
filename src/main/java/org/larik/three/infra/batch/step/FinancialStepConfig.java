@@ -1,4 +1,4 @@
-package org.larik.three.infra.batch.job;
+package org.larik.three.infra.batch.step;
 
 import org.larik.three.domain.dto.comparison.ComparisonTransactionResult;
 import org.larik.three.domain.model.ProcessedTransaction;
