@@ -2,14 +2,17 @@ package org.larik.three.infra.batch.job;
 
 import lombok.extern.slf4j.Slf4j;
 import org.larik.three.domain.model.Transaction;
+import org.larik.three.infra.batch.listener.AuditListener;
 import org.larik.three.infra.batch.processor.transaction.TransactionFileProcessor;
 import org.larik.three.infra.batch.reader.impl.TransactionAsyncReader;
 import org.larik.three.infra.batch.reader.partitioner.TransactionPartitioner;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.job.Job;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.job.parameters.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.Step;
+import org.springframework.batch.core.step.StepExecution;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.infrastructure.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -54,5 +57,10 @@ public class TransactionJobConfig {
                 .processor(processor)
                 .writer(writer)
                 .build();
+    }
+
+    @Bean
+    public AuditListener auditListener(StepExecution stepExecution) {
+        return new AuditListener(stepExecution);
     }
 }
