@@ -1,29 +1,23 @@
 package org.larik.three.infra.batch.listener;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.batch.core.annotation.BeforeStep;
+import org.larik.three.domain.model.Audit;
 import org.springframework.batch.core.listener.ChunkListener;
 import org.springframework.batch.core.step.StepExecution;
 import org.springframework.batch.infrastructure.item.Chunk;
 import org.springframework.batch.infrastructure.item.ExecutionContext;
-import org.springframework.stereotype.Component;
+import org.springframework.data.mongodb.core.MongoTemplate;
 
 import java.time.Duration;
 import java.time.Instant;
 
 @Slf4j
-@Component
+@RequiredArgsConstructor
 public class AuditListener implements ChunkListener<Object, Object> {
+    private final StepExecution stepExecution;
 
     private Instant timeStamp;
-
-    private StepExecution stepExecution;
-
-    @BeforeStep
-    public void beforeStep(StepExecution stepExecution) {
-        this.stepExecution = stepExecution;
-    }
-
 
     @Override
     public void beforeChunk(Chunk<Object> chunk) {

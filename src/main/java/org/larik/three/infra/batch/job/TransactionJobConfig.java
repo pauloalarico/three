@@ -16,9 +16,11 @@ import org.springframework.batch.core.step.StepExecution;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.infrastructure.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.TaskExecutor;
+import org.springframework.data.mongodb.core.MongoTemplate;
 
 @Slf4j
 @Configuration
@@ -49,7 +51,6 @@ public class TransactionJobConfig {
                 .step(step)
                 .taskExecutor(taskExecutor)
                 .gridSize(3)
-                .listener(auditListener)
                 .build();
     }
 
@@ -66,6 +67,13 @@ public class TransactionJobConfig {
                 .writer(writer)
                 .listener(auditListener)
                 .build();
+    }
+
+    @Bean
+    @StepScope
+    public AuditListener auditListener(MongoTemplate mongoTemplate,
+                                       @Value("#{stepExecution}") StepExecution stepExecution) {
+       return new AuditListener(mongoTemplate, stepExecution);
     }
 
 }
