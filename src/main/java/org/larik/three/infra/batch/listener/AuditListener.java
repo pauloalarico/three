@@ -15,6 +15,8 @@ import java.time.Instant;
 @Slf4j
 @RequiredArgsConstructor
 public class AuditListener implements ChunkListener<Object, Object> {
+
+    private final MongoTemplate mongoTemplate;
     private final StepExecution stepExecution;
 
     private Instant timeStamp;
