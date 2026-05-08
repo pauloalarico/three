@@ -37,11 +37,6 @@ public class AuditListener implements ChunkListener<Object, Object> {
         ExecutionContext ctx = stepExecution.getExecutionContext();
         ctx.putLong("audit.chunkProcessedInMs", duration);
         log.info("Chunk done in {} ms, wrote {} at mongo", duration, stepExecution.getWriteCount());
-
-//        chunk.getItems().stream().reduce((a,b) -> b)
-//                .ifPresent(last -> {
-//                    ctx.putString("audit.lastProcessedId", last.toString());
-//                });
     }
 
     @Override

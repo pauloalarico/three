@@ -25,8 +25,11 @@ import org.springframework.core.task.TaskExecutor;
 public class TransactionJobConfig {
 
     @Bean
-    public Job job (@Qualifier("step") Step step, JobRepository jobRepository, @Qualifier("comparison") Step comparison,
-                    Step financialStep, Step parallelReportStep) {
+    public Job job(@Qualifier("step") Step step,
+                   JobRepository jobRepository,
+                   @Qualifier("comparison") Step comparison,
+                   Step financialStep,
+                   Step parallelReportStep) {
         return new JobBuilder("RRRx'", jobRepository)
                 .start(step)
                 .next(comparison)
@@ -37,30 +40,32 @@ public class TransactionJobConfig {
     }
 
     @Bean
-    public Step step(JobRepository jobRepository, @Qualifier("workerStep")Step step, TaskExecutor taskExecutor) {
+    public Step step(JobRepository jobRepository,
+                     @Qualifier("workerStep") Step step,
+                     TaskExecutor taskExecutor,
+                     AuditListener auditListener) {
         return new StepBuilder("thread-partitioner", jobRepository)
                 .partitioner("partition-reader", new TransactionPartitioner())
                 .step(step)
                 .taskExecutor(taskExecutor)
                 .gridSize(3)
+                .listener(auditListener)
                 .build();
     }
 
     @Bean
     public Step workerStep(JobRepository jobRepository,
-                     TransactionAsyncReader reader,
-                     TransactionFileProcessor processor,
-                     ItemWriter<Transaction> writer) {
+                           TransactionAsyncReader reader,
+                           TransactionFileProcessor processor,
+                           ItemWriter<Transaction> writer,
+                           AuditListener auditListener) {
         return new StepBuilder("teste", jobRepository)
                 .<Transaction, Transaction>chunk(100)
                 .reader(reader)
                 .processor(processor)
                 .writer(writer)
+                .listener(auditListener)
                 .build();
     }
 
-    @Bean
-    public AuditListener auditListener(StepExecution stepExecution) {
-        return new AuditListener(stepExecution);
-    }
 }

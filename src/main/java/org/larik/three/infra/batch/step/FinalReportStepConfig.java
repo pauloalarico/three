@@ -5,6 +5,7 @@ import org.larik.three.domain.model.CompleteReport;
 import org.larik.three.domain.model.DivergentDataReport;
 import org.larik.three.domain.model.FinancialPositionReport;
 import org.larik.three.domain.model.ProcessedTransaction;
+import org.larik.three.infra.batch.listener.AuditListener;
 import org.larik.three.infra.batch.processor.report.CompleteDataProcessor;
 import org.larik.three.infra.batch.processor.report.DivergentDataProcessor;
 import org.larik.three.infra.batch.processor.report.FinancialReportProcessor;
@@ -36,9 +37,10 @@ public class FinalReportStepConfig {
     }
 
     @Bean
-    public Step parallelReportStep(JobRepository jobRepository, Flow flow) {
+    public Step parallelReportStep(JobRepository jobRepository, Flow flow, AuditListener auditListener) {
         return new StepBuilder("report-writing", jobRepository)
                 .flow(flow)
+                .listener(auditListener)
                 .build();
     }
 

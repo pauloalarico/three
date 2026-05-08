@@ -2,6 +2,7 @@ package org.larik.three.infra.batch.step;
 
 import org.larik.three.domain.dto.comparison.ComparisonTransaction;
 import org.larik.three.domain.dto.comparison.ComparisonTransactionResult;
+import org.larik.three.infra.batch.listener.AuditListener;
 import org.larik.three.infra.batch.processor.comparison.TransactionComparison;
 import org.larik.three.infra.batch.reader.impl.ComparisonTransactionReader;
 import org.springframework.batch.core.repository.JobRepository;
@@ -17,12 +18,14 @@ public class ComparisonStepConfig {
     @Bean
     public Step comparison(JobRepository jobRepository, ComparisonTransactionReader reader,
                            TransactionComparison processor,
-                           ItemWriter<ComparisonTransactionResult> writer) {
+                           ItemWriter<ComparisonTransactionResult> writer,
+                           AuditListener auditListener) {
         return new StepBuilder("comparison-step", jobRepository)
                 .<ComparisonTransaction, ComparisonTransactionResult>chunk(100)
                 .reader(reader)
                 .processor(processor)
                 .writer(writer)
+                .listener(auditListener)
                 .build();
     }
 }
