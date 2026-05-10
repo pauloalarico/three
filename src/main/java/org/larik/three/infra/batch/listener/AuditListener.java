@@ -29,10 +29,13 @@ public class AuditListener implements ChunkListener<Object, Object> {
 
     @Override
     public void afterChunk(Chunk<Object> chunk) {
-        long duration = Duration.between(timeStamp, Instant.now()).toMillis();
+        var finishedAt = Instant.now();
+        long duration = Duration.between(timeStamp, finishedAt).toMillis();
         ExecutionContext ctx = stepExecution.getExecutionContext();
         ctx.putLong("audit.chunkProcessedInMs", duration);
         log.info("Chunk done in {} ms, wrote {} at mongo", duration, stepExecution.getWriteCount());
+        var audit = new Audit(stepExecution.getStepName(), stepExecution.getCreateTime(), finishedAt.toString(), duration, stepExecution.getWriteCount());
+        mongoTemplate.insert(audit);
     }
 
     @Override
