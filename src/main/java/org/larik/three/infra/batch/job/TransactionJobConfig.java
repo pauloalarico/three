@@ -6,6 +6,7 @@ import org.larik.three.infra.batch.listener.AuditListener;
 import org.larik.three.infra.batch.processor.transaction.TransactionFileProcessor;
 import org.larik.three.infra.batch.reader.impl.TransactionAsyncReader;
 import org.larik.three.infra.batch.reader.partitioner.TransactionPartitioner;
+import org.larik.three.infra.batch.skip.AuditSkipPolicy;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.job.Job;
 import org.springframework.batch.core.job.builder.JobBuilder;
@@ -59,13 +60,14 @@ public class TransactionJobConfig {
                            TransactionAsyncReader reader,
                            TransactionFileProcessor processor,
                            ItemWriter<Transaction> writer,
-                           AuditListener auditListener) {
+                           AuditListener auditListener, AuditSkipPolicy auditSkipPolicy) {
         return new StepBuilder("teste", jobRepository)
                 .<Transaction, Transaction>chunk(100)
                 .reader(reader)
                 .processor(processor)
                 .writer(writer)
                 .listener(auditListener)
+                .skipPolicy(auditSkipPolicy)
                 .build();
     }
 
