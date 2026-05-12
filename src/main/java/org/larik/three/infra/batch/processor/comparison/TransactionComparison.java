@@ -1,14 +1,20 @@
 package org.larik.three.infra.batch.processor.comparison;
 
+import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.Nullable;
 import org.larik.three.domain.dto.comparison.ComparisonTransaction;
 import org.larik.three.domain.dto.comparison.ComparisonTransactionResult;
+import org.larik.three.domain.service.RedisPersistService;
 import org.springframework.batch.infrastructure.item.ItemProcessor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class TransactionComparison implements ItemProcessor<ComparisonTransaction, ComparisonTransactionResult> {
+
+    private final RedisPersistService redisService;
 
     @Value("${app.maxValueDifference}")
     private String maxValueDiff;
@@ -19,7 +25,9 @@ public class TransactionComparison implements ItemProcessor<ComparisonTransactio
         var expected = item.expectedTransaction();
 
         if (raw == null && expected == null) {
-            return new ComparisonTransactionResult(null, null, ComparisonTransactionResult.ComparisonStatus.MISSING);
+            var comparison = new ComparisonTransactionResult(null, null, ComparisonTransactionResult.ComparisonStatus.MISSING);
+            redisService.persist(comparison);
+            return comparison;
         }
 
         if (raw != null && expected == null) {
@@ -27,7 +35,9 @@ public class TransactionComparison implements ItemProcessor<ComparisonTransactio
         }
 
         if(raw == null) {
-            return new ComparisonTransactionResult(null, expected, ComparisonTransactionResult.ComparisonStatus.MISSING);
+            var comparison = new ComparisonTransactionResult(null, expected, ComparisonTransactionResult.ComparisonStatus.MISSING);
+            redisService.persist(comparison);
+            return comparison;
         }
 
         if (raw.equals(expected)) {
