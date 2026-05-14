@@ -3,7 +3,7 @@ spring:
     name: three
   sql:
     init:
-      mode: never
+      mode: neve
 
   datasource:
     username: ${DB_USERNAME}
@@ -33,7 +33,13 @@ spring:
     level.org.springframework.batch: DEBUG
     level.org.example.batchmongo: DEBUG
 
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
 app:
   mongoCollection: ${COLLECTION_THREE}
   maxValueDifference: ${MAX_VALUE:100}
   comparisonCollection: ${COLLECTION_COMPARISON}
+
