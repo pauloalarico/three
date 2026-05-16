@@ -30,6 +30,7 @@ public class JdbcConfig {
         factoryBean.setDatabaseType("POSTGRES");
         factoryBean.setTransactionManager(transactionManager);
         factoryBean.setDataSource(dataSource);
+        factoryBean.setIsolationLevelForCreate("ISOLATION_READ_COMMITTED");
         factoryBean.afterPropertiesSet();
         return factoryBean.getObject();
     }
