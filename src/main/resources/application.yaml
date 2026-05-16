@@ -3,11 +3,11 @@ spring:
     name: three
   sql:
     init:
-      mode: neve
+      mode: never
 
   datasource:
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:pinguim01}
     url: ${DB_URL}
     jdbc-url: ${DB_URL}
     jdbcUrl: ${DB_URL}
@@ -23,7 +23,7 @@ spring:
         show-sql: true
   batch:
     jdbc:
-      initialize-schema: never
+      initialize-schema: always
     job:
       enabled: true
   mongodb:
