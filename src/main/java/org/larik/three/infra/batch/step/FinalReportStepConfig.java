@@ -37,8 +37,8 @@ public class FinalReportStepConfig {
     }
 
     @Bean
-    public Step parallelReportStep(JobRepository jobRepository, Flow flow, AuditListener auditListener) {
-        return new StepBuilder("report-writing", jobRepository)
+    public Step parallelReportStep(JobRepository jobRepositoryMeta, Flow flow, AuditListener auditListener) {
+        return new StepBuilder("report-writing", jobRepositoryMeta)
                 .flow(flow)
                 .listener(auditListener)
                 .build();

@@ -17,10 +17,10 @@ import org.springframework.context.annotation.Configuration;
 public class FinancialStepConfig {
 
     @Bean
-    public Step financialStep(JobRepository jobRepository, ItemReader<ComparisonTransactionResult> readerComparison,
+    public Step financialStep(JobRepository jobRepositoryMeta, ItemReader<ComparisonTransactionResult> readerComparison,
                               FinancialPositionCalculator processor, ItemWriter<ProcessedTransaction> writer,
                               AuditListener auditListener, AuditSkipPolicy auditSkipPolicy) {
-        return new StepBuilder("financialStep", jobRepository)
+        return new StepBuilder("financialStep", jobRepositoryMeta)
                 .<ComparisonTransactionResult, ProcessedTransaction>chunk(15)
                 .reader(readerComparison)
                 .processor(processor)

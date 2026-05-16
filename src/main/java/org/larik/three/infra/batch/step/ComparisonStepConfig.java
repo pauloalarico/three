@@ -18,11 +18,11 @@ import org.springframework.context.annotation.Configuration;
 public class ComparisonStepConfig {
 
     @Bean
-    public Step comparison(JobRepository jobRepository, ComparisonTransactionReader reader,
+    public Step comparison(JobRepository jobRepositoryMeta, ComparisonTransactionReader reader,
                            TransactionComparison processor,
                            ItemWriter<ComparisonTransactionResult> writer,
                            AuditListener auditListener, AuditSkipPolicy auditSkipPolicy) {
-        return new StepBuilder("comparison-step", jobRepository)
+        return new StepBuilder("comparison-step", jobRepositoryMeta)
                 .<ComparisonTransaction, ComparisonTransactionResult>chunk(100)
                 .reader(reader)
                 .processor(processor)

@@ -29,11 +29,11 @@ public class TransactionJobConfig {
 
     @Bean
     public Job job(@Qualifier("step") Step step,
-                   JobRepository jobRepository,
+                   JobRepository jobRepositoryMeta,
                    @Qualifier("comparison") Step comparison,
                    Step financialStep,
                    Step parallelReportStep) {
-        return new JobBuilder("RRRx'", jobRepository)
+        return new JobBuilder("financial-job'", jobRepositoryMeta)
                 .start(step)
                 .next(comparison)
                 .next(financialStep)
@@ -43,11 +43,10 @@ public class TransactionJobConfig {
     }
 
     @Bean
-    public Step step(JobRepository jobRepository,
+    public Step step(JobRepository jobRepositoryMeta,
                      @Qualifier("workerStep") Step step,
-                     TaskExecutor taskExecutor,
-                     AuditListener auditListener) {
-        return new StepBuilder("thread-partitioner", jobRepository)
+                     TaskExecutor taskExecutor) {
+        return new StepBuilder("thread-partitioner", jobRepositoryMeta)
                 .partitioner("partition-reader", new TransactionPartitioner())
                 .step(step)
                 .taskExecutor(taskExecutor)
@@ -56,12 +55,12 @@ public class TransactionJobConfig {
     }
 
     @Bean
-    public Step workerStep(JobRepository jobRepository,
+    public Step workerStep(JobRepository jobRepositoryMeta,
                            TransactionAsyncReader reader,
                            TransactionFileProcessor processor,
                            ItemWriter<Transaction> writer,
                            AuditListener auditListener, AuditSkipPolicy auditSkipPolicy) {
-        return new StepBuilder("teste", jobRepository)
+        return new StepBuilder("teste", jobRepositoryMeta)
                 .<Transaction, Transaction>chunk(100)
                 .reader(reader)
                 .processor(processor)
