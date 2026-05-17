@@ -16,6 +16,6 @@ public class AuditSkipPolicy implements SkipPolicy {
             throw new SkipLimitExceededException(MAX_SKIP, t);
         }
 
-        return false;
+        return true;
     }
 }
