@@ -18,6 +18,6 @@ public class DivergentDataProcessor implements ItemProcessor<ComparisonTransacti
     }
 
     private static BigDecimal calculateDelta(ComparisonTransactionResult item) {
-        return item.expectedTransaction().getPayment().getValue().subtract(item.expectedTransaction().getPayment().getValue());
+        return item.expectedTransaction().getPayment().getValue().subtract(item.rawTransaction().getPayment().getValue());
     }
 }
