@@ -2,7 +2,7 @@ package org.larik.three.infra.batch.processor.report;
 
 import org.jspecify.annotations.Nullable;
 import org.larik.three.domain.dto.comparison.ComparisonTransactionResult;
-import org.larik.three.domain.model.AbstractReport;
+import org.larik.three.domain.model.TransactionSummary;
 import org.larik.three.domain.model.CompleteReport;
 import org.springframework.batch.infrastructure.item.ItemProcessor;
 import org.springframework.stereotype.Component;
@@ -16,8 +16,8 @@ public class CompleteDataProcessor implements ItemProcessor<ComparisonTransactio
         );
     }
 
-    private static AbstractReport buildAbstractReport(ComparisonTransactionResult item) {
-        return new AbstractReport(
+    private static TransactionSummary buildAbstractReport(ComparisonTransactionResult item) {
+        return new TransactionSummary(
                 item.rawTransaction().getTransactionId(),
                 item.rawTransaction().getClient().getClientId(),
                 item.rawTransaction().getClient().getName(),
