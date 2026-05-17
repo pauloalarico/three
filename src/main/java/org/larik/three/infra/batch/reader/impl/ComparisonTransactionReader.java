@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.Nullable;
 import org.larik.three.domain.dto.comparison.ComparisonTransaction;
 import org.larik.three.domain.model.Transaction;
-import org.larik.three.domain.utils.TransactionMapper;
+import org.larik.three.infra.mapper.TransactionMapper;
 import org.larik.three.domain.valueobject.TransactionTrustSource;
 import org.springframework.batch.infrastructure.item.ExecutionContext;
 import org.springframework.batch.infrastructure.item.ItemStreamException;

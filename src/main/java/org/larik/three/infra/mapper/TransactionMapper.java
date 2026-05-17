@@ -1,4 +1,4 @@
-package org.larik.three.domain.utils;
+package org.larik.three.infra.mapper;
 
 import org.larik.three.domain.enums.PaymentStatus;
 import org.larik.three.domain.model.Client;

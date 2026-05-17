@@ -1,4 +1,4 @@
-package org.larik.three.domain.repository;
+package org.larik.three.infra.repository;
 
 import org.larik.three.domain.model.Transaction;
 import org.springframework.data.mongodb.repository.MongoRepository;
