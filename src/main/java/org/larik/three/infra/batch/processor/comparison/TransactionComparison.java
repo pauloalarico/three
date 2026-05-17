@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.Nullable;
 import org.larik.three.domain.dto.comparison.ComparisonTransaction;
 import org.larik.three.domain.dto.comparison.ComparisonTransactionResult;
-import org.larik.three.domain.service.RedisPersistService;
+import org.larik.three.domain.port.out.MissingTransactionRepository;
 import org.springframework.batch.infrastructure.item.ItemProcessor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 @RequiredArgsConstructor
 public class TransactionComparison implements ItemProcessor<ComparisonTransaction, ComparisonTransactionResult> {
 
-    private final RedisPersistService redisService;
+    private final MissingTransactionRepository redisService;
 
     @Value("${app.maxValueDifference}")
     private String maxValueDiff;
@@ -27,7 +27,7 @@ public class TransactionComparison implements ItemProcessor<ComparisonTransactio
 
         if (raw == null && expected == null) {
             var comparison = new ComparisonTransactionResult(null, null, ComparisonTransactionResult.ComparisonStatus.MISSING);
-            redisService.persist(comparison);
+            redisService.save(comparison);
             return comparison;
         }
 
@@ -37,7 +37,7 @@ public class TransactionComparison implements ItemProcessor<ComparisonTransactio
 
         if(raw == null) {
             var comparison = new ComparisonTransactionResult(null, expected, ComparisonTransactionResult.ComparisonStatus.MISSING);
-            redisService.persist(comparison);
+            redisService.save(comparison);
             return comparison;
         }
 
