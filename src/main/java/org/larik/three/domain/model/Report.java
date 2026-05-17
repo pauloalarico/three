@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 
 @JsonIgnoreType
 public sealed interface Report permits CompleteReport, DivergentDataReport {
-    AbstractReport report();
+    TransactionSummary report();
 
     default String transactionId() {return report().transactionId();}
     default Long clientId() {return report().clientId();}

@@ -2,7 +2,7 @@ package org.larik.three.domain.model;
 
 import java.math.BigDecimal;
 
-public record AbstractReport(
+public record TransactionSummary(
         String transactionId,
         Long clientId,
         String clientName,
