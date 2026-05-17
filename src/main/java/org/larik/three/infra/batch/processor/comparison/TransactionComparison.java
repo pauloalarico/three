@@ -7,8 +7,9 @@ import org.larik.three.domain.dto.comparison.ComparisonTransactionResult;
 import org.larik.three.domain.service.RedisPersistService;
 import org.springframework.batch.infrastructure.item.ItemProcessor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
+
+import java.math.BigDecimal;
 
 @Component
 @RequiredArgsConstructor
@@ -41,9 +42,9 @@ public class TransactionComparison implements ItemProcessor<ComparisonTransactio
         }
 
         if (raw.equals(expected)) {
-            int valueDifference = expected.getPayment().getValue().subtract(raw.getPayment().getValue()).intValue();
-            boolean isDiffMoreThanExpected = valueDifference > Integer.parseInt(maxValueDiff);
-            return isDiffMoreThanExpected ? new ComparisonTransactionResult(raw, expected, ComparisonTransactionResult.ComparisonStatus.DIVERGENT)
+            var valueDifference = expected.getPayment().getValue().subtract(raw.getPayment().getValue());
+            int isDiffMoreThanExpected = valueDifference.compareTo(new BigDecimal(maxValueDiff));
+            return isDiffMoreThanExpected == 0 ? new ComparisonTransactionResult(raw, expected, ComparisonTransactionResult.ComparisonStatus.DIVERGENT)
                     : new ComparisonTransactionResult(raw, expected, ComparisonTransactionResult.ComparisonStatus.MATCHED);
         }
 
