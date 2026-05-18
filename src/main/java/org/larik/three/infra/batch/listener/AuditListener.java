@@ -3,11 +3,11 @@ package org.larik.three.infra.batch.listener;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.larik.three.domain.model.Audit;
+import org.larik.three.domain.port.out.MongoAudit;
 import org.springframework.batch.core.listener.ChunkListener;
 import org.springframework.batch.core.step.StepExecution;
 import org.springframework.batch.infrastructure.item.Chunk;
 import org.springframework.batch.infrastructure.item.ExecutionContext;
-import org.springframework.data.mongodb.core.MongoTemplate;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -16,7 +16,7 @@ import java.time.Instant;
 @RequiredArgsConstructor
 public class AuditListener implements ChunkListener<Object, Object> {
 
-    private final MongoTemplate mongoTemplate;
+    private final MongoAudit mongoAudit;
     private final StepExecution stepExecution;
 
     private Instant timeStamp;
@@ -35,7 +35,7 @@ public class AuditListener implements ChunkListener<Object, Object> {
         ctx.putLong("audit.chunkProcessedInMs", duration);
         log.info("Chunk done in {} ms, wrote {} at mongo", duration, stepExecution.getWriteCount());
         var audit = new Audit(stepExecution.getStepName(), stepExecution.getCreateTime(), finishedAt.toString(), duration, stepExecution.getWriteCount());
-        mongoTemplate.insert(audit);
+        mongoAudit.insert(audit);
     }
 
     @Override
