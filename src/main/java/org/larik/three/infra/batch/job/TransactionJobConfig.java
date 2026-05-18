@@ -60,7 +60,7 @@ public class TransactionJobConfig {
                            TransactionFileProcessor processor,
                            ItemWriter<Transaction> writer,
                            AuditListener auditListener, AuditSkipPolicy auditSkipPolicy) {
-        return new StepBuilder("teste", jobRepositoryMeta)
+        return new StepBuilder("worker-thread-step", jobRepositoryMeta)
                 .<Transaction, Transaction>chunk(100)
                 .reader(reader)
                 .processor(processor)

@@ -4,7 +4,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 
-@Document("batch_audit ")
+@Document("batch_audit")
 public record Audit(
         String stepName,
         LocalDateTime chunkStartedAt,

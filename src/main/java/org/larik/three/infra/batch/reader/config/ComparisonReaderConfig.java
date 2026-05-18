@@ -36,7 +36,7 @@ public class ComparisonReaderConfig {
         query.with(Sort.by(Sort.Direction.ASC, "client.clientId"));
 
         return new MongoCursorItemReaderBuilder<Transaction>()
-                .name("raw-tramsaction-reader")
+                .name("raw-transaction-reader")
                 .collection("writer-teste")
                 .template(mongoTemplate)
                 .query(query)
@@ -49,7 +49,7 @@ public class ComparisonReaderConfig {
     @Bean
     public ItemStreamReader<TransactionTrustSource> expectedTransactionsReader() {
         return new MongoCursorItemReaderBuilder<TransactionTrustSource>()
-                .name("raw-tramsaction-reader")
+                .name("expected-transaction-reader")
                 .collection("trust-source")
                 .template(mongoTemplate)
                 .query(new Query())
