@@ -1,5 +1,6 @@
 package org.larik.three.infra.repository;
 
+import org.larik.three.domain.model.Audit;
 import org.larik.three.domain.port.out.MongoAudit;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
@@ -14,7 +15,7 @@ public class AuditRepository implements MongoAudit  {
     private final MongoTemplate mongoTemplate;
 
     @Override
-    public void insert(Object o) {
-        mongoTemplate.insert(o);
+    public void insert(Audit a) {
+        mongoTemplate.insert(a);
     }
 }
