@@ -1,11 +1,11 @@
 package org.larik.three.infra.batch.skip;
 
 import org.larik.three.domain.model.ErrorPolicy;
+import org.larik.three.domain.port.out.ErrorPort;
 import org.springframework.batch.core.step.StepExecution;
 import org.springframework.batch.core.step.skip.SkipLimitExceededException;
 import org.springframework.batch.core.step.skip.SkipPolicy;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -15,13 +15,13 @@ public class AuditSkipPolicy implements SkipPolicy {
 
     private static final int MAX_SKIP = 10;
 
-    private final MongoTemplate mongoTemplate;
+    private final ErrorPort errorPort;
 
     @Value("#{stepExecution}")
     private StepExecution stepExecution;
 
-    public AuditSkipPolicy(MongoTemplate mongoTemplate) {
-        this.mongoTemplate = mongoTemplate;
+    public AuditSkipPolicy(ErrorPort errorPort) {
+        this.errorPort = errorPort;
     }
 
     @Override
@@ -34,7 +34,7 @@ public class AuditSkipPolicy implements SkipPolicy {
         var error = new ErrorPolicy(stepExecution.getCommitCount(),
                 stepExecution.getFailureExceptions().getFirst().getMessage(),
                 stepExecution.getStepName(), skipCount, LocalDate.now().toString());
-        mongoTemplate.insert(error);
+        errorPort.insert(error);
         return true;
     }
 }
